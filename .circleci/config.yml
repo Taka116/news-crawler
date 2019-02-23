@@ -20,7 +20,6 @@ jobs:
           MYSQL_DATABASE: circleci
           MYSQL_USER: circleci
           MYSQL_PASSWORD: circleci
-          MYSQL_DATABASE: circleci
           # MYSQL_ROOT_HOST: '%'
           # MYSQL_ROOT_PASSWORD: 
           TZ: /usr/share/zoneinfo/Asia/Tokyo
