@@ -15,7 +15,6 @@ jobs:
           MYSQL_ROOT_HOST: '%'
           MYSQL_ROOT_PASSWORD: 
           TZ: /usr/share/zoneinfo/Asia/Tokyo
-    # ディレクトリ情報を移動（こうしないとエラーになる）
     working_directory: ~/Taka116/news-crawler
     steps:
       - checkout
@@ -33,15 +32,11 @@ jobs:
           paths:
             - vendor/bundle
 
-      # Database setup
-      # DBのセットアップを修正
       - run:
           name: Database setup
           command: |
             bundle exec rake db:create db:schema:load --trace
             bundle exec rake db:migrate
-          # environment:
-          #   DATABASE_URL: "postgres://ubuntu@localhost:5432/myapp_test"
             
       - run:
           when: always
@@ -58,21 +53,6 @@ jobs:
       - run: 
           when: always
           command: bundle exec rubocop
-
-      # run tests!
-      # RSpecの実行も修正
-      # - run:
-      #     name: run tests
-      #     command: |
-      #       mkdir /tmp/test-results
-      #       TEST_FILES="$(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)"
-      #       bundle exec rspec --format progress \
-      #                       --format RspecJunitFormatter \
-      #                       --out /tmp/test-results/rspec.xml \
-      #                       --format progress \
-      #                       "${TEST_FILES}"
-      #     environment:
-      #       DATABASE_URL: "postgres://ubuntu@localhost:5432/myapp_test"
 
       # Save test results for timing analysis
       - store_test_results:

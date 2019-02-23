@@ -4,6 +4,8 @@ AllCops:
     - 'db/schema.rb'
     - 'config/routes.rb'
     - 'bin/*'
+    - 'Gemfile'
+    - 'config/**/*'
   TargetRubyVersion: 2.5
   DisplayCopNames: true
 
@@ -556,4 +558,7 @@ Rails/OutputSafety:
 Rails/DynamicFindBy:
   Enabled: false
 Rails/BulkChangeTable:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
   Enabled: false
