@@ -1,10 +1,17 @@
 version: 2
 jobs:
   build:
-    machine: 
-      enabled: true
-      environment:
-        TZ: /usr/share/zoneinfo/Asia/Tokyo
+    docker:
+      - image: circleci/ruby:2.3.5-node  # language image
+        environment:
+          RAILS_ENV: test
+          TZ: /usr/share/zoneinfo/Asia/Tokyo
+      - image: circleci/mysql:5.7.22-ram
+        environment:
+          MYSQL_ROOT_PASSWORD: circleci
+          MYSQL_DATABASE: circleci
+          MYSQL_ROOT_HOST: '%'
+          TZ: /usr/share/zoneinfo/Asia/Tokyo
     # ディレクトリ情報を移動（こうしないとエラーになる）
     working_directory: ~/Taka116/news-crawler
     steps:
