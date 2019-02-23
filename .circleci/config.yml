@@ -2,16 +2,19 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/ruby:2.5.3-node  # language image
+      - image: circleci/ruby:2.5.3-node
         environment:
           RAILS_ENV: test
+          DB_CONNECTION: mysql
           DB_HOST: 127.0.0.1
+          DB_PASSWORD: 
           TZ: /usr/share/zoneinfo/Asia/Tokyo
       - image: circleci/mysql:5.5.62-ram
         environment:
           MYSQL_ROOT_PASSWORD: circleci
           MYSQL_DATABASE: circleci
           MYSQL_ROOT_HOST: '%'
+          MYSQL_ROOT_PASSWORD: 
           TZ: /usr/share/zoneinfo/Asia/Tokyo
     # ディレクトリ情報を移動（こうしないとエラーになる）
     working_directory: ~/Taka116/news-crawler
