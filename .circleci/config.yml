@@ -1,0 +1,77 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/ruby:2.5.3-node  # language image
+        environment:
+          RAILS_ENV: test
+          DB_HOST: 127.0.0.1
+          TZ: /usr/share/zoneinfo/Asia/Tokyo
+      - image: circleci/mysql:5.5.62-ram
+        environment:
+          MYSQL_ROOT_PASSWORD: circleci
+          MYSQL_DATABASE: circleci
+          MYSQL_ROOT_HOST: '%'
+          TZ: /usr/share/zoneinfo/Asia/Tokyo
+    # ディレクトリ情報を移動（こうしないとエラーになる）
+    working_directory: ~/Taka116/news-crawler
+    steps:
+      - checkout
+
+      # Restore bundle cache
+      - restore_cache:
+          key: rails-demo-{{ checksum "Gemfile.lock" }}
+
+      # Bundle install dependencies
+      - run: bundle install --path vendor/bundle
+
+      # Store bundle cache
+      - save_cache:
+          key: rails-demo-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+
+      # Database setup
+      # DBのセットアップを修正
+      - run:
+          name: Database setup
+          command: |
+            bundle exec rake db:create db:schema:load --trace
+            bundle exec rake db:migrate
+          # environment:
+          #   DATABASE_URL: "postgres://ubuntu@localhost:5432/myapp_test"
+            
+      - run:
+          when: always
+          command: bundle exec rspec --color --require spec_helper --format progress spec
+      - run:
+          when: always
+          command: bundle exec rails_best_practices .
+      - run:
+          when: always
+          command: bundle exec brakeman -z --rails5
+      - run: 
+          when: always
+          command: bundle exec reek
+      - run: 
+          when: always
+          command: bundle exec rubocop
+
+      # run tests!
+      # RSpecの実行も修正
+      # - run:
+      #     name: run tests
+      #     command: |
+      #       mkdir /tmp/test-results
+      #       TEST_FILES="$(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)"
+      #       bundle exec rspec --format progress \
+      #                       --format RspecJunitFormatter \
+      #                       --out /tmp/test-results/rspec.xml \
+      #                       --format progress \
+      #                       "${TEST_FILES}"
+      #     environment:
+      #       DATABASE_URL: "postgres://ubuntu@localhost:5432/myapp_test"
+
+      # Save test results for timing analysis
+      - store_test_results:
+          path: test_results
