@@ -2,11 +2,11 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/ruby:2.3.5-node  # language image
+      - image: circleci/ruby:2.5.3-node  # language image
         environment:
           RAILS_ENV: test
           TZ: /usr/share/zoneinfo/Asia/Tokyo
-      - image: circleci/mysql:5.7.22-ram
+      - image: circleci/mysql:5.5.62-ram
         environment:
           MYSQL_ROOT_PASSWORD: circleci
           MYSQL_DATABASE: circleci
