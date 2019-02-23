@@ -29,7 +29,6 @@ group :development, :test do
   gem 'rspec-support'
   gem 'rubocop-rspec'
   gem 'webmock'
-  
   gem 'brakeman', require: false
   gem "rails_best_practices", require: false
   gem 'reek'
