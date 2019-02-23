@@ -7,15 +7,18 @@ jobs:
           RAILS_ENV: test
           DB_CONNECTION: mysql
           DB_HOST: 127.0.0.1
-          DB_DATABASE: circleci
-          DB_USERNAME: circleci
+          DB_USERNAME: root
           DB_PASSWORD: circleci
+          DB_NAME_TEST: circleci
+          # DB_DATABASE: circleci
+          # DB_USERNAME: circleci
+          # DB_PASSWORD: circleci
           TZ: /usr/share/zoneinfo/Asia/Tokyo
       - image: circleci/mysql:5.5.62-ram
         environment:
           MYSQL_ROOT_PASSWORD: circleci
           MYSQL_DATABASE: circleci
-          MYSQL_USER: circleci
+          # MYSQL_USER: circleci
           MYSQL_PASSWORD: circleci
           TZ: /usr/share/zoneinfo/Asia/Tokyo
     working_directory: ~/Taka116/news-crawler
